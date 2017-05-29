@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-28T00:19:32+01:00</updated><id>http://localhost:4000/</id><title type="html">Exoptable</title><subtitle>This must be the place.</subtitle><entry><title type="html">D3 Test Post</title><link href="http://localhost:4000/2017/05/27/D3.html" rel="alternate" type="text/html" title="D3 Test Post" /><published>2017-05-27T00:00:00+01:00</published><updated>2017-05-27T00:00:00+01:00</updated><id>http://localhost:4000/2017/05/27/D3</id><content type="html" xml:base="http://localhost:4000/2017/05/27/D3.html">&lt;p&gt;Trying out &lt;em&gt;some markdown&lt;/em&gt; and then including some d3, if it works…&lt;/p&gt;
+
+&lt;style&gt;
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis--x path {
+  display: none;
+}
+&lt;/style&gt;
+
+&lt;svg width=&quot;960&quot; height=&quot;500&quot;&gt;&lt;/svg&gt;
+
+&lt;script src=&quot;https://d3js.org/d3.v4.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+
+var svg = d3.select(&quot;svg&quot;),
+    margin = {top: 20, right: 20, bottom: 30, left: 20},
+    width = +svg.attr(&quot;width&quot;) - margin.left - margin.right,
+    height = +svg.attr(&quot;height&quot;) - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append(&quot;g&quot;)
+    .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
+
+d3.csv(&quot;/assets/data/capital_survey/data.csv&quot;, function(d) {
+  d.size = +d.size;
+  d.premium = +d.premium;
+  d.reserves = +d.reserves;
+  d.lines = +d.lines;
+  d.complexity = +d.complexity
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  x.domain(data.map(function(d) { return d.id; }));
+  y.domain([0, d3.max(data, function(d) { return d.premium; })]);
+
+  g.append(&quot;g&quot;)
+      .attr(&quot;class&quot;, &quot;axis axis--x&quot;)
+      .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+      .call(d3.axisBottom(x));
+
+  g.append(&quot;g&quot;)
+      .attr(&quot;class&quot;, &quot;axis axis--y&quot;)
+      .call(d3.axisLeft(y))
+    .append(&quot;text&quot;)
+      .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)
+      .attr(&quot;y&quot;, 6)
+      .attr(&quot;dy&quot;, &quot;0.71em&quot;)
+      .attr(&quot;text-anchor&quot;, &quot;end&quot;)
+      .text(&quot;Premium&quot;);
+
+  g.selectAll(&quot;.bar&quot;)
+    .data(data)
+    .enter().append(&quot;rect&quot;)
+      .attr(&quot;class&quot;, &quot;bar&quot;)
+      .attr(&quot;x&quot;, function(d) { return x(d.id); })
+      .attr(&quot;y&quot;, function(d) { return y(d.premium); })
+      .attr(&quot;width&quot;, x.bandwidth())
+      .attr(&quot;height&quot;, function(d) { return height - y(d.premium); });
+});
+
+
+
+&lt;/script&gt;</content><author><name></name></author><summary type="html">Trying out some markdown and then including some d3, if it works…</summary></entry><entry><title type="html">D3 Test Post</title><link href="http://localhost:4000/2017/05/27/D3-v2.html" rel="alternate" type="text/html" title="D3 Test Post" /><published>2017-05-27T00:00:00+01:00</published><updated>2017-05-27T00:00:00+01:00</updated><id>http://localhost:4000/2017/05/27/D3-v2</id><content type="html" xml:base="http://localhost:4000/2017/05/27/D3-v2.html">&lt;style&gt;
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+
+&lt;/style&gt;
+
+&lt;svg width=&quot;960&quot; height=&quot;500&quot;&gt;&lt;/svg&gt;
+&lt;div align=&quot;center&quot;&gt;
+&lt;div id=&quot;Selection&quot;&gt;
+        &lt;div id=&quot;buttons&quot;&gt;
+        &lt;button id=&quot;Premium&quot; onclick=&quot;premium()&quot;&gt;Gross Premium&lt;/button&gt;
+        &lt;button id=&quot;Reserves&quot; onclick=&quot;reserves()&quot;&gt;Reserves&lt;/button&gt;
+        &lt;button id=&quot;Lines&quot; onclick=&quot;lines()&quot;&gt;Lines of Business&lt;/button&gt;
+        &lt;button id=&quot;Complexity&quot; onclick=&quot;complexity()&quot;&gt;Complexity&lt;/button&gt;
+        &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://d3js.org/d3.v4.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+
+var svg = d3.select(&quot;svg&quot;),
+    margin = {top: 20, right: 20, bottom: 40, left: 40},
+    width = +svg.attr(&quot;width&quot;) - margin.left - margin.right,
+    height = +svg.attr(&quot;height&quot;) - margin.top - margin.bottom;
+
+var x = d3.scaleLinear().rangeRound([0, width]),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append(&quot;g&quot;)
+    .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
+
+var yAxis = d3.axisLeft(y)
+
+function chart(d) {
+  x.domain([0, d3.max(d, function(d) { return d.size; })])
+  y.domain([0, d3.max(d, function(d) { return d.complexity; })]);
+
+  g.append(&quot;g&quot;)
+      .attr(&quot;class&quot;, &quot;axis axis--x&quot;)
+      .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+      .call(d3.axisBottom(x));
+
+  g.append(&quot;g&quot;)
+      .attr(&quot;class&quot;, &quot;yaxis&quot;)
+      .call(yAxis)
+      .append(&quot;text&quot;)
+      .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)
+      .attr(&quot;y&quot;, 10)
+      .attr(&quot;dy&quot;, &quot;0.71em&quot;)
+      .attr(&quot;text-anchor&quot;, &quot;end&quot;);
+
+      // text label for the y axis
+  svg.append(&quot;text&quot;)
+      .attr(&quot;class&quot;, &quot;yaxis_label&quot;)
+      .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)
+      .attr(&quot;y&quot;, 0 - margin.left+35)
+      .attr(&quot;x&quot;,0 - (height / 2))
+      .attr(&quot;dy&quot;, &quot;1em&quot;)
+      .style(&quot;text-anchor&quot;, &quot;middle&quot;)
+      .text(&quot;Complexity&quot;);
+
+      // text label for the x axis
+       svg.append(&quot;text&quot;)     
+                .attr(&quot;class&quot;, &quot;xaxis_label&quot;)
+           .attr(&quot;transform&quot;,
+                 &quot;translate(&quot; + (width/2) + &quot; ,&quot; +
+                                (height + margin.top + 30) + &quot;)&quot;)
+           .style(&quot;text-anchor&quot;, &quot;middle&quot;)
+           .text(&quot;Team Size&quot;);
+
+
+  g.selectAll(&quot;.dot&quot;)
+    .data(d)
+    .enter().append(&quot;circle&quot;)
+      .attr(&quot;class&quot;, &quot;dot&quot;)
+      .attr(&quot;r&quot;, 3.5)
+      .attr(&quot;cx&quot;, function(d) { return x(d.size) })
+      .attr(&quot;cy&quot;, function(d) { return y(d.complexity);
+        })
+      };
+
+d3.csv(&quot;/assets/data/capital_survey/data.csv&quot;, function(d){
+  d.forEach(function(d){
+    d.id = +d.id;
+  d.complexity = +d.complexity;
+  d.size = +d.size;
+});
+chart(d);
+});
+
+function premium() {
+console.log(&quot;pressed premium button&quot;)
+    // Get the data again
+    d3.csv(&quot;/assets/data/capital_survey/data.csv&quot;, function(d){
+      d.forEach(function(d){
+        d.id = +d.id;
+      d.premium = +d.premium;
+      d.size = +d.size;
+	    });
+
+     // Scale the range of the data again
+      x.domain([0, d3.max(d, function(d) { return d.size; })])
+      y.domain([0, d3.max(d, function(d) { return d.premium; })]);
+
+    // Select the section we want to apply our changes to
+    var svg = d3.select(&quot;svg&quot;).transition();
+
+    // Make the changes
+        svg.selectAll(&quot;.dot&quot;)   // change the dots
+            .duration(750)
+            .attr(&quot;cy&quot;, function(d) { return y(d.premium) })
+        svg.select(&quot;.yaxis&quot;) // change the y axis
+            .duration(750)
+            .call(yAxis);
+       svg.selectAll(&quot;.yaxis_label&quot;)
+            .duration(750)
+            .text(&quot;Premium&quot;);
+    });
+}
+
+function reserves() {
+console.log(&quot;pressed reserves button&quot;)
+    // Get the data again
+    d3.csv(&quot;/assets/data/capital_survey/data.csv&quot;, function(d){
+      d.forEach(function(d){
+        d.id = +d.id;
+      d.reserves = +d.reserves;
+      d.size = +d.size;
+	    });
+
+     // Scale the range of the data again
+      x.domain([0, d3.max(d, function(d) { return d.size; })])
+      y.domain([0, d3.max(d, function(d) { return d.reserves; })]);
+
+    // Select the section we want to apply our changes to
+    var svg = d3.select(&quot;body&quot;).transition();
+
+    // Make the changes
+        svg.selectAll(&quot;.dot&quot;)   // change the dots
+            .duration(750)
+            .attr(&quot;cy&quot;, function(d) { return y(d.reserves) })
+        svg.selectAll(&quot;.yaxis&quot;) // change the y axis
+            .duration(750)
+            .call(yAxis);
+            svg.selectAll(&quot;.yaxis_label&quot;)
+                 .duration(750)
+                 .text(&quot;Reserves&quot;);
+    });
+
+}
+
+function lines() {
+console.log(&quot;pressed premium button&quot;)
+    // Get the data again
+    d3.csv(&quot;/assets/data/capital_survey/data.csv&quot;, function(d){
+      d.forEach(function(d){
+        d.id = +d.id;
+      d.lines = +d.lines;
+      d.size = +d.size;
+	    });
+
+     // Scale the range of the data again
+      x.domain([0, d3.max(d, function(d) { return d.size; })])
+      y.domain([0, d3.max(d, function(d) { return d.lines; })]);
+
+    // Select the section we want to apply our changes to
+    var svg = d3.select(&quot;svg&quot;).transition();
+
+    // Make the changes
+        svg.selectAll(&quot;.dot&quot;)   // change the dots
+            .duration(750)
+            .attr(&quot;cy&quot;, function(d) { return y(d.lines) })
+        svg.selectAll(&quot;.yaxis&quot;) // change the y axis
+            .duration(750)
+            .call(yAxis);
+            svg.selectAll(&quot;.yaxis_label&quot;)
+                 .duration(750)
+                 .text(&quot;Lines of Business&quot;);
+    });
+}
+
+function complexity() {
+console.log(&quot;pressed premium button&quot;)
+    // Get the data again
+    d3.csv(&quot;/assets/data/capital_survey/data.csv&quot;, function(d){
+      d.forEach(function(d){
+        d.id = +d.id;
+      d.complexity = +d.complexity;
+      d.size = +d.size;
+	    });
+
+      y.domain([0, d3.max(d, function(d) { return d.complexity; })]);
+
+    // Select the section we want to apply our changes to
+    var svg = d3.select(&quot;svg&quot;).transition();
+
+    // Make the changes
+        svg.selectAll(&quot;.dot&quot;)   // change the dots
+            .duration(750)
+            .attr(&quot;cy&quot;, function(d) { return y(d.complexity) })
+        svg.selectAll(&quot;.yaxis&quot;) // change the y axis
+            .duration(750)
+            .call(yAxis);
+            svg.selectAll(&quot;.yaxis_label&quot;)
+                 .duration(750)
+                 .text(&quot;Complexity&quot;);
+    });
+}
+
+
+&lt;/script&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Second test post</title><link href="http://localhost:4000/2017/05/26/Second-post.html" rel="alternate" type="text/html" title="Second test post" /><published>2017-05-26T00:00:00+01:00</published><updated>2017-05-26T00:00:00+01:00</updated><id>http://localhost:4000/2017/05/26/Second-post</id><content type="html" xml:base="http://localhost:4000/2017/05/26/Second-post.html">&lt;p&gt;This is a second post, lets try out &lt;em&gt;some&lt;/em&gt; markdown
+and then lots more words in general&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/earth.jpg&quot; alt=&quot;Try this&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">This is a second post, lets try out some markdown and then lots more words in general</summary></entry><entry><title type="html">First Jekyll Post</title><link href="http://localhost:4000/2017/05/23/test-post.html" rel="alternate" type="text/html" title="First Jekyll Post" /><published>2017-05-23T00:00:00+01:00</published><updated>2017-05-23T00:00:00+01:00</updated><id>http://localhost:4000/2017/05/23/test-post</id><content type="html" xml:base="http://localhost:4000/2017/05/23/test-post.html">&lt;p&gt;This is a test post with some text etc etc - Fearghas&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Then some more words&lt;/p&gt;</content><author><name></name></author><summary type="html">This is a test post with some text etc etc - Fearghas</summary></entry></feed>
